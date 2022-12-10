@@ -2,7 +2,7 @@
 
 namespace AspNetBiodiv.Core.Web.Services
 {
-    public class RechercheEspecesService
+    public class BogusRechercheEspecesService : IRechercheEspecesService
     {
         private readonly Faker<Espece> faker = new("fr");
 

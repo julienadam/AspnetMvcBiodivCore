@@ -6,11 +6,11 @@ namespace AspNetBiodiv.Core.Web.Controllers
     [Route("especes")]
     public class EspecesController : Controller
     {
-        private readonly RechercheEspecesService serviceRecherche;
+        private readonly IRechercheEspecesService serviceRecherche;
 
-        public EspecesController()
+        public EspecesController(IRechercheEspecesService serviceRecherche)
         {
-            serviceRecherche = new RechercheEspecesService();
+            this.serviceRecherche = serviceRecherche ?? throw new ArgumentNullException(nameof(serviceRecherche));
         }
 
         [Route("")]
