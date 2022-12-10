@@ -4,7 +4,15 @@ namespace AspNetBiodiv.Core.Web.Services
 {
     public class BogusRechercheEspecesService : IRechercheEspecesService
     {
-        private readonly Faker<Espece> faker = new("fr");
+        private readonly Faker<Espece> faker;
+
+        public BogusRechercheEspecesService()
+        {
+            faker = new Faker<Espece>("fr")
+                .RuleFor(e => e.Habitat, f => f.PickRandom<Habitat>())
+                .RuleFor(e => e.Presence, f => f.PickRandom<EtatPresence>())
+                .RuleFor(e => e.IdInpn, f => f.UniqueIndex);
+        }
 
         private static string GenerateNomScientifique(Faker f) => 
             string.Join(" ", f.Lorem.Words(2).Select(w => w.ToLower()));
@@ -14,6 +22,7 @@ namespace AspNetBiodiv.Core.Web.Services
             return faker
                 .RuleFor(e => e.Id, f => f.IndexFaker)
                 .RuleFor(e => e.NomScientifique, GenerateNomScientifique)
+
                 .GenerateBetween(1, 10);
         }
 

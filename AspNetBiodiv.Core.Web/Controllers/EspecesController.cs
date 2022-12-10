@@ -1,4 +1,5 @@
-﻿using AspNetBiodiv.Core.Web.Services;
+﻿using AspNetBiodiv.Core.Web.Models;
+using AspNetBiodiv.Core.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetBiodiv.Core.Web.Controllers
@@ -26,9 +27,9 @@ namespace AspNetBiodiv.Core.Web.Controllers
             if (espece == null)
             {
                 return NotFound();
-            }      
-            
-            return View(espece);
+            }
+
+            return View(MapEspeceViewModel(espece));
         }
 
         [Route("{nomSci}")]
@@ -40,17 +41,30 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 return NotFound();
             }
 
-            return View(espece);
+            return View(MapEspeceViewModel(espece));
         }
 
         [Route("tags/{tag}")]
         public IActionResult Tags(string tag)
         {
-            var especes = serviceRecherche.RechercherParTag(tag).ToList();
+            var especes = serviceRecherche
+                .RechercherParTag(tag)
+                .Select(MapEspeceViewModel)
+                .ToList();
             ViewData["Title"] = $"Recherche par tag {tag}"; 
             return View("Resultats", especes);
         }
-        
+
+        private static EspeceViewModel MapEspeceViewModel(Espece e) =>
+            new()
+            {
+                Id = e.Id,
+                NomScientifique = e.NomScientifique,
+                UrlIconeHabitat = $"/img/habitat/{e.Habitat.ToString().ToLowerInvariant()}.png",
+                UrlIconePresence = $"/img/presence/{e.Presence.ToString().ToLowerInvariant()}.png",
+                UrlInpn = $"https://inpn.mnhn.fr/espece/cd_nom/{e.IdInpn}"
+            };
+
         [Route("{year:int}/{month:int}")]
         public IActionResult ByYearMonth(int year, int month)
         {
@@ -59,7 +73,10 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 return BadRequest();
             }
 
-            var especes = serviceRecherche.RechercherParMois(year, month).ToList();
+            var especes = serviceRecherche
+                .RechercherParMois(year, month)
+                .Select(MapEspeceViewModel)
+                .ToList();
             ViewData["Title"] = $"Recherche pour {year}/{month}";
             return View("Resultats", especes);
         }

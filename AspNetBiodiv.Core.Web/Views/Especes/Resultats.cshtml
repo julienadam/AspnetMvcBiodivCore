@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AspNetBiodiv.Core.Web.Services.Espece>
+﻿@model IEnumerable<AspNetBiodiv.Core.Web.Models.EspeceViewModel>
 
 <h1>@ViewData["Title"]</h1>
 
@@ -11,27 +11,28 @@
             <th>
                 @Html.DisplayNameFor(model => model.NomScientifique)
             </th>
-            @*<th></th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.UrlInpn)
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    <a asp-action="Detail" asp-route-id="@item.Id">
-                        @Html.DisplayFor(modelItem => item.NomScientifique)
-                    </a>
-                </td>
-                @*<td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>*@
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomScientifique)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UrlInpn)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Detail", new { id=item.Id }) |
+            </td>
+        </tr>
+}
     </tbody>
 </table>
