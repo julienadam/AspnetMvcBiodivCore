@@ -7,5 +7,7 @@
         public string UrlInpn { get; set; }
         public string UrlIconeHabitat { get; set; }
         public string UrlIconePresence { get; set; }
+        public string HabitatAlt { get; set; }
+        public string PresenceAlt { get; set; }
     }
 }

@@ -61,7 +61,9 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 Id = e.Id,
                 NomScientifique = e.NomScientifique,
                 UrlIconeHabitat = $"/img/habitat/{e.Habitat.ToString().ToLowerInvariant()}.png",
-                UrlIconePresence = $"/img/presence/{e.Presence.ToString().ToLowerInvariant()}.png",
+                HabitatAlt = e.Habitat.ToString(),
+                UrlIconePresence = $"/img/presence/{char.ToLower((char)(int)e.Presence)}.svg",
+                PresenceAlt = e.Presence.ToString(),
                 UrlInpn = $"https://inpn.mnhn.fr/espece/cd_nom/{e.IdInpn}"
             };
 
