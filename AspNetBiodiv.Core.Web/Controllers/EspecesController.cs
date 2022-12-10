@@ -2,42 +2,42 @@
 
 namespace AspNetBiodiv.Core.Web.Controllers
 {
+    [Route("especes")]
     public class EspecesController : Controller
     {
+        [Route("")]
         public IActionResult Index()
         {
             return Content("Formulaire de recherche");
         }
-
-        public IActionResult Create()
+        
+        [Route("{id:int}")]
+        public IActionResult Detail(int id)
         {
-            return Content("Formulaire de saisie d'une nouvelle espèce");
+            return Content($"Détails sur l'espèce {id}");
         }
 
-        [HttpPost]
-        public IActionResult Create(string data)
+        [Route("{nomSci}")]
+        public IActionResult Detail(string nomSci)
         {
-            return Content($"Enregistrement d'une nouvelle espèce à partir des données {data}");
+            return Content($"Détails sur l'espèce {nomSci}");
         }
 
-        public IActionResult Detail(int? id, string? nomSci)
-        {
-            if (id != null)
-            {
-                return Content($"Détails sur l'espèce {id}");
-            }
-
-            if(nomSci != null)
-            {
-                return Content($"Détails sur l'espèce {nomSci}");
-            }
-
-            return base.BadRequest("Soit un id, soit un nom scientifique !");
-        }
-
+        [Route("tags/{tag}")]
         public IActionResult Tags(string tag)
         {
             return Content($"Recherche par tag : {tag}");
+        }
+
+        [Route("{year:int}/{month:int}")]
+        public IActionResult Tags(int year, int month)
+        {
+            if (month is > 12 or < 1)
+            {
+                return NotFound();
+            }
+
+            return Content($"Recherche par mois : {month} de l'année {year}");
         }
     }
 }
