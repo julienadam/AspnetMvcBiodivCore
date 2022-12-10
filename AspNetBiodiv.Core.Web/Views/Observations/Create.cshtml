@@ -1,0 +1,39 @@
+﻿@model AspNetBiodiv.Core.Web.Models.ObservationViewModel
+
+@{
+    ViewBag.Title = "Saisie d'une observation de " + @Model.NomEspeceObservee;
+}
+
+<h1>Create</h1>
+
+<h4>ObservationViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div class="form-group">
+                <label asp-for="DateObservation" class="control-label"></label>
+                <input asp-for="DateObservation" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailObservateur" class="control-label"></label>
+                <input asp-for="EmailObservateur" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Individus" class="control-label"></label>
+                <input asp-for="Individus" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="NomCommune" class="control-label"></label>
+                <select name="NomCommune" class="form-control" asp-items="@ViewBag.Communes"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Commentaires" class="control-label"></label>
+                <textarea asp-for="Commentaires" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

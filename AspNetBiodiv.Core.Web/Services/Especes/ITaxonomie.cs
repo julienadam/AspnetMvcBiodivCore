@@ -1,6 +1,6 @@
-﻿namespace AspNetBiodiv.Core.Web.Services;
+﻿namespace AspNetBiodiv.Core.Web.Services.Especes;
 
-public interface IRechercheEspecesService
+public interface ITaxonomie
 {
     Espece? RechercherParId(int id);
     Espece? RechercherParNomScientifique(string nomScientifique);

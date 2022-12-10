@@ -1,10 +1,12 @@
-using AspNetBiodiv.Core.Web.Services;
+using AspNetBiodiv.Core.Web.Services.Especes;
+using AspNetBiodiv.Core.Web.Services.Observations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<IRechercheEspecesService, BogusRechercheEspecesService>();
+builder.Services.AddSingleton<ITaxonomie, BogusTaxonomie>();
+builder.Services.AddSingleton<IObservations, FakeObservations>();
 
 var app = builder.Build();
 

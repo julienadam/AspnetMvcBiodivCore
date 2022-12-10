@@ -1,5 +1,5 @@
 ﻿using AspNetBiodiv.Core.Web.Models;
-using AspNetBiodiv.Core.Web.Services;
+using AspNetBiodiv.Core.Web.Services.Especes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetBiodiv.Core.Web.Controllers
@@ -7,11 +7,11 @@ namespace AspNetBiodiv.Core.Web.Controllers
     [Route("especes")]
     public class EspecesController : Controller
     {
-        private readonly IRechercheEspecesService serviceRecherche;
+        private readonly ITaxonomie taxonomie;
 
-        public EspecesController(IRechercheEspecesService serviceRecherche)
+        public EspecesController(ITaxonomie taxonomie)
         {
-            this.serviceRecherche = serviceRecherche ?? throw new ArgumentNullException(nameof(serviceRecherche));
+            this.taxonomie = taxonomie ?? throw new ArgumentNullException(nameof(taxonomie));
         }
 
         [Route("")]
@@ -23,7 +23,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
         [Route("{id:int}")]
         public IActionResult Detail(int id)
         {
-            var espece = serviceRecherche.RechercherParId(id);
+            var espece = taxonomie.RechercherParId(id);
             if (espece == null)
             {
                 return NotFound();
@@ -35,7 +35,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
         [Route("{nomSci}")]
         public IActionResult Detail(string nomSci)
         {
-            var espece = serviceRecherche.RechercherParNomScientifique(nomSci);
+            var espece = taxonomie.RechercherParNomScientifique(nomSci);
             if (espece == null)
             {
                 return NotFound();
@@ -47,7 +47,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
         [Route("tags/{tag}")]
         public IActionResult Tags(string tag)
         {
-            var especes = serviceRecherche
+            var especes = taxonomie
                 .RechercherParTag(tag)
                 .Select(MapEspeceViewModel)
                 .ToList();
@@ -75,7 +75,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 return BadRequest();
             }
 
-            var especes = serviceRecherche
+            var especes = taxonomie
                 .RechercherParMois(year, month)
                 .Select(MapEspeceViewModel)
                 .ToList();
