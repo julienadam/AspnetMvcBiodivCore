@@ -16,7 +16,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
         [Route("")]
         public IActionResult Index()
         {
-            return Content("Formulaire de recherche");
+            return View();
         }
         
         [Route("{id:int}")]
@@ -28,7 +28,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 return NotFound();
             }      
             
-            return Content($"Détails sur l'espèce {espece.Id} : nom scientifique {espece.NomScientifique}");
+            return View(espece);
         }
 
         [Route("{nomSci}")]
@@ -40,21 +40,19 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 return NotFound();
             }
 
-            return Content($"Détails sur l'espèce {espece.Id} : nom scientifique {espece.NomScientifique}");
+            return View(espece);
         }
 
         [Route("tags/{tag}")]
         public IActionResult Tags(string tag)
         {
             var especes = serviceRecherche.RechercherParTag(tag).ToList();
-            return Content($"{especes.Count} trouvées\n{FormatEspeces(especes)}");
+            ViewData["Title"] = $"Recherche par tag {tag}"; 
+            return View("Resultats", especes);
         }
-
-        private static string FormatEspeces(IEnumerable<Espece> especes) =>
-            string.Join("\n", especes.Select(e => $"Nom scientifique : {e.NomScientifique}. Id: {e.Id}"));
-
+        
         [Route("{year:int}/{month:int}")]
-        public IActionResult Tags(int year, int month)
+        public IActionResult ByYearMonth(int year, int month)
         {
             if (month is > 12 or < 1)
             {
@@ -62,8 +60,8 @@ namespace AspNetBiodiv.Core.Web.Controllers
             }
 
             var especes = serviceRecherche.RechercherParMois(year, month).ToList();
-            return Content(
-                $"{especes.Count} trouvées pour le mois {month} de l'année {year}\n{FormatEspeces(especes)}");
+            ViewData["Title"] = $"Recherche pour {year}/{month}";
+            return View("Resultats", especes);
         }
     }
 }

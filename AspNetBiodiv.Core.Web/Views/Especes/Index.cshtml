@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<a asp-action="Detail" asp-route-id="42">Espèce id non trouvé</a>
+<br />
+<a asp-action="Detail" asp-route-id="41">Espèce id existant</a>
+<br />
+<a asp-action="Detail" asp-route-nomSci="foo">Espèce nom non trouvé</a>
+<br />
+<a asp-action="Detail" asp-route-nomSci="paxis paxus">Espèce nom existant</a>
+<br />
+<a asp-action="Tags" asp-route-tag="foo">Pas de résultats pour tag</a>
+<br />
+<a asp-action="Tags" asp-route-tag="bar">Résultats pour tag</a>
+<br />
+<a asp-action="Tags" asp-route-tag="foo">Pas de résultats pour tag</a>
+<br />
+<a asp-action="ByYearMonth" asp-route-year="2022" asp-route-month="02">Pas de résultats pour mois</a>
+<br />
+<a asp-action="ByYearMonth" asp-route-year="2022" asp-route-month="03">Résultats pour mois</a>
+<br />
+
