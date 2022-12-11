@@ -9,8 +9,8 @@ namespace AspNetBiodiv.Core.Web.Controllers
     [Route("observations")]
     public class ObservationsController : Controller
     {
-        readonly ITaxonomie taxonomie;
-        readonly IObservations observations;
+        private readonly ITaxonomie taxonomie;
+        private readonly IObservations observations;
 
         public ObservationsController(ITaxonomie taxonomie, IObservations observations)
         {
