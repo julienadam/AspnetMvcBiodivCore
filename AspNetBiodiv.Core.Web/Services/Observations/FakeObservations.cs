@@ -77,4 +77,10 @@ public class FakeObservations : IObservations
         Delete(e);
         observations.Add(observation);
     }
+
+    public int NumberOfObservationsToday(string email)
+    {
+        return observations.Count(o =>
+            o.EmailObservateur == email && o.PostedAt.Date == DateTime.Now.Date);
+    }
 }

@@ -7,5 +7,6 @@
         Observation? GetById(int id);
         void Delete(Observation observation);
         void Update(Observation observation);
+        int NumberOfObservationsToday(string email);
     }
 }

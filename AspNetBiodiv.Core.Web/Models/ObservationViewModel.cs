@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using AspNetBiodiv.Core.Web.Services.Observations;
 using AspNetBiodiv.Core.Web.Plumbing.Validation;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetBiodiv.Core.Web.Models
 {
@@ -18,8 +19,9 @@ namespace AspNetBiodiv.Core.Web.Models
         [Required]
         [DataType(DataType.EmailAddress, ErrorMessage = "Saisissez une adresse email valide")]
         [DisplayName("Email de l'observateur")]
+        [Remote(action: "ValidateNumberOfPosts", controller: "Observations")]
         public string EmailObservateur { get; set; } = string.Empty;
-        
+
         [DisplayName("Nombre d'individus observés")]
         [Range(1, 100, ErrorMessage = "Saisissez un nombre entre 1 et 100")]
         public int? Individus { get; set; }
@@ -35,6 +37,8 @@ namespace AspNetBiodiv.Core.Web.Models
 
         [DisplayName("Nom de l'espèce observée")]
         public string? NomEspeceObservee { get; set; }
+
+        public DateTime? DateCreation { get; set; }
 
         public ObservationViewModel(int idEspeceObservee, string nomEspeceObservee)
         {

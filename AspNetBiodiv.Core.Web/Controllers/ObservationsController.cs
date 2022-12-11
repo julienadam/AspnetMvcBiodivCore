@@ -21,7 +21,10 @@ namespace AspNetBiodiv.Core.Web.Controllers
         public ActionResult Create(int id_espece)
         {
             var espece = taxonomie.RechercherParId(id_espece);
-            var viewModel = new ObservationViewModel(espece.Id, espece.NomScientifique);
+            var viewModel = new ObservationViewModel(espece.Id, espece.NomScientifique)
+            {
+                DateCreation = DateTime.Now
+            };
             return View(viewModel);
         }
 
@@ -29,11 +32,16 @@ namespace AspNetBiodiv.Core.Web.Controllers
         [HttpPost]
         public ActionResult Create(int id_espece, ObservationViewModel viewModel)
         {
+            if (HasTooManyToday(viewModel.EmailObservateur))
+            {
+                ModelState.AddModelError(nameof(ObservationViewModel.EmailObservateur), "Too many posts today");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
             }
-
+            
             var espece = taxonomie.RechercherParId(id_espece);
             observations.Create(CreateObservationFromViewModel(id_espece, viewModel, espece));
             return RedirectToAction("Detail", "Especes", new { id = id_espece });
@@ -43,7 +51,8 @@ namespace AspNetBiodiv.Core.Web.Controllers
         {
             return new Observation
             {
-                Commentaires = viewModel.Commentaires,
+                PostedAt = viewModel.DateCreation ?? DateTime.Now,
+                Commentaires = viewModel.Commentaires ?? "",
                 EspeceObserveeId = id_espece,
                 EmailObservateur = viewModel.EmailObservateur,
                 NomCommune = viewModel.NomCommune,
@@ -101,13 +110,24 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 return NotFound();
             }
 
+            if (existing.EmailObservateur != input.EmailObservateur)
+            {
+                ModelState.AddModelError(nameof(ObservationViewModel.EmailObservateur), "L'email a été changé !!!");
+            }
+            
+            // Pas besoin de valider le nombre de posts
+            if (!ModelState.IsValid)
+            {
+                return View(input);
+            }
+
             var observation = CreateObservationFromViewModel(existing.EspeceObserveeId, input, existing.EspeceObservee);
             observation.ObservationId = id;
             observations.Update(observation);
             return RedirectToAction("Detail", "Especes", new { id = observation.EspeceObserveeId });
         }
 
-        [Route("")]
+        [Route("{id:int}")]
         public ActionResult Details(int id)
         {
             var obs = observations.GetById(id);
@@ -123,6 +143,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
         {
             return new ObservationViewModel
             {
+                DateCreation = observation.PostedAt,
                 NomEspeceObservee = observation.EspeceObservee.NomScientifique,
                 NomCommune = observation.NomCommune,
                 Commentaires = observation.Commentaires,
@@ -134,26 +155,13 @@ namespace AspNetBiodiv.Core.Web.Controllers
             };
         }
 
-        //// GET: Observations/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult ValidateNumberOfPosts(string emailObservateur) =>
+            HasTooManyToday(emailObservateur) 
+                ? Json("Vous avez déja envoyé 5 observations aujourd'hui !") 
+                : Json(true);
 
-        //// POST: Observations/Edit/5
-        //[HttpPost]
-        //public ActionResult Edit(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add update logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        private bool HasTooManyToday(string emailObservateur) 
+            => observations.NumberOfObservationsToday(emailObservateur) >= 5;
     }
 }

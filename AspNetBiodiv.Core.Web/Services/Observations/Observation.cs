@@ -8,6 +8,7 @@ public class Observation
 {
     public int ObservationId { get; set; }
     public DateTime ObservedAt { get; set; }
+    public DateTime PostedAt { get; set; }
     public string EmailObservateur { get; set; }
     public int? Individus { get; set; }
     public string NomCommune { get; set; }
