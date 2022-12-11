@@ -10,9 +10,9 @@
     <p>Entrez votre requête ci-dessous :</p>
     @{
         var q = Model?.Query ?? string.Empty;
-}
+    }
+    @Html.ValidationSummary()
     <input type="text" value="@q" name="query" id="query"/>
-    @*@Html.TextBox("query", Model?.Query ?? "")*@
     <input type="submit" value="Chercher" class="btn btn-primary" />
 </form>
 
@@ -33,4 +33,9 @@
     {
         <p>Aucun résultat</p>
     }
+}
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
 }

@@ -23,11 +23,16 @@ namespace AspNetBiodiv.Core.Web.Controllers
 
         [Route("")]
         [HttpPost]
-        public async Task<ActionResult> Index(TagSearchViewModel input)
+        public ActionResult Index(TagSearchViewModel input)
         {
-            var tags = 
+            if (!ModelState.IsValid)
+            {
+                return View(input);
+            }
+            
+            var tags =
                 taxonomie.RechercheDeTags(input.Query)
-                .OrderBy(i => i);
+                    .OrderBy(i => i);
 
             return View(new TagSearchViewModel
             {
