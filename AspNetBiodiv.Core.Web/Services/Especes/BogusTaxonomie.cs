@@ -38,5 +38,19 @@ namespace AspNetBiodiv.Core.Web.Services.Especes
 
         public IEnumerable<Espece> RechercherParMois(int year, int month) =>
             year == 2022 && month == 2 ? Enumerable.Empty<Espece>() : especes.Values;
+
+        private IEnumerable<string> AllTags()
+        {
+            yield return "vulpes";
+            yield return "mammifère";
+            yield return "canidés";
+            yield return "canis";
+            yield return "poisson";
+        }
+
+        public IEnumerable<string> RechercheDeTags(string query)
+        {
+            return AllTags().Where(t => t.Contains(query.ToLower()));
+        }
     }
 }

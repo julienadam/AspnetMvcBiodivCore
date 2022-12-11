@@ -1,0 +1,36 @@
+﻿@model TagSearchViewModel
+
+@{
+    ViewBag.Title = "Recherche de tags";
+}
+
+<h2>Recherche de tags</h2>
+
+<form asp-controller="Search" asp-action="Index">
+    <p>Entrez votre requête ci-dessous :</p>
+    @{
+        var q = Model?.Query ?? string.Empty;
+}
+    <input type="text" value="@q" name="query" id="query"/>
+    @*@Html.TextBox("query", Model?.Query ?? "")*@
+    <input type="submit" value="Chercher" class="btn btn-primary" />
+</form>
+
+@if (Model?.Results != null)
+{
+    if (Model.Results.Any())
+    {
+        <ul>
+            @foreach (var tag in Model.Results)
+            {
+                <li>
+                    <a asp-controller="Especes" asp-action="Tags" asp-route-tag="@tag">@tag</a>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Aucun résultat</p>
+    }
+}

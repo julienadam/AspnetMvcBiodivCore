@@ -6,4 +6,5 @@ public interface ITaxonomie
     Espece? RechercherParNomScientifique(string nomScientifique);
     IEnumerable<Espece> RechercherParTag(string tag);
     IEnumerable<Espece> RechercherParMois(int year, int month);
+    IEnumerable<string> RechercheDeTags(string query);
 }
