@@ -71,7 +71,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 HabitatAlt = e.Habitat.ToString(),
                 UrlIconePresence = $"/img/presence/{char.ToLower((char)(int)e.Presence)}.svg",
                 PresenceAlt = e.Presence.ToString(),
-                UrlInpn = $"https://inpn.mnhn.fr/espece/cd_nom/{e.IdInpn}",
+                CodeInpn = e.IdInpn,
                 Observations = observationsEspece?.Select(ObservationViewModel.FromObservation) 
                                ?? Enumerable.Empty<ObservationViewModel>()
             };

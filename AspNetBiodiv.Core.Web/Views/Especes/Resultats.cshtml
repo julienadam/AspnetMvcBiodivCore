@@ -11,8 +11,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.NomScientifique)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UrlInpn)
+            <th>                
+                Lien INPN
             </th>
             <th></th>
         </tr>
@@ -27,7 +27,7 @@
                 @Html.DisplayFor(modelItem => item.NomScientifique)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UrlInpn)
+                    <inpn Code="@item.CodeInpn">Lien vers l'INPN</inpn>
             </td>
             <td>
                 @Html.ActionLink("Details", "Detail", new { id=item.Id }) |

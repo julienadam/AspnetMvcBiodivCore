@@ -23,11 +23,11 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.NomScientifique)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UrlInpn)
+        <dt class="col-sm-2">
+            Plus de détails
         </dt>
         <dd class="col-sm-10">
-            <a href="@Model.UrlInpn">Lien vers l'INPN</a>
+            <inpn code="@Model.CodeInpn">Lien vers l'INPN</inpn>
         </dd>
         <dt class="col-sm-2">
             Habitat
