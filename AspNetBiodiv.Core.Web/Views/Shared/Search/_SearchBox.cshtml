@@ -1,7 +1,6 @@
 ﻿@model TagSearchViewModel
 
 <form asp-controller="Search" asp-action="Index">
-    <p>Entrez votre requête ci-dessous :</p>
     @{
         var q = Model?.Query ?? string.Empty;
     }

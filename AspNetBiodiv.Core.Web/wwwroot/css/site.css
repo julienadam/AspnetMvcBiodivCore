@@ -20,3 +20,7 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.banner {
+    background-image: url("/img/banner.jpg");
+}
