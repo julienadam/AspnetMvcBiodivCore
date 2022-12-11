@@ -22,7 +22,7 @@ public class FakeObservations : IObservations
         return currentId;
     }
 
-    public IEnumerable<Observation> GetObservationsForEspece(int id)
+    public IEnumerable<Observation>? GetObservationsForEspece(int id)
     {
         return observations.Where(o => o.EspeceObserveeId == id);
     }

@@ -41,32 +41,19 @@ namespace AspNetBiodiv.Core.Web.Controllers
         [HttpPost]
         public ActionResult Create(int id_espece, ObservationViewModel viewModel)
         {
-
-            if (ModelState.IsValid)
+            var espece = taxonomie.RechercherParId(id_espece);
+            observations.Create(new Observation
             {
-                try
-                {
-                    observations.Create(new Observation
-                    {
-                        Commentaires = viewModel.Commentaires,
-                        EspeceObserveeId = id_espece,
-                        EmailObservateur = viewModel.EmailObservateur,
-                        NomCommune = viewModel.NomCommune,
-                        Individus = viewModel.Individus,
-                        ObservedAt = viewModel.DateObservation
-                    });
+                Commentaires = viewModel.Commentaires,
+                EspeceObserveeId = id_espece,
+                EmailObservateur = viewModel.EmailObservateur,
+                NomCommune = viewModel.NomCommune,
+                Individus = viewModel.Individus,
+                ObservedAt = viewModel.DateObservation,
+                EspeceObservee = espece
+            });
 
-                    return RedirectToAction("Detail", "Especes", new { id = id_espece });
-                }
-                catch
-                {
-                    return View(viewModel);
-                }
-            }
-            else
-            {
-                return View(viewModel);
-            }
+            return RedirectToAction("Detail", "Especes", new { id = id_espece });
         }
 
         public ActionResult Details(int id)

@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using AspNetBiodiv.Core.Web.Services.Especes;
+using AspNetBiodiv.Core.Web.Services.Observations;
 
 namespace AspNetBiodiv.Core.Web.Models
 {
@@ -14,9 +16,6 @@ namespace AspNetBiodiv.Core.Web.Models
         [DisplayName("Email de l'observateur")]
         [EmailAddress]
         public string EmailObservateur { get; set; }
-
-        [DisplayName("Nom de l'observateur")]
-        public string NomObservateur { get; set; }
 
         [DisplayName("Nombre d'individus observés")]
         public int? Individus { get; set; }
@@ -40,6 +39,21 @@ namespace AspNetBiodiv.Core.Web.Models
 
         public ObservationViewModel()
         {
+        }
+
+        public static ObservationViewModel FromObservation(Observation observation)
+        {
+            return new ObservationViewModel
+            {
+                Id = observation.ObservationId,
+                NomEspeceObservee = observation.EspeceObservee.NomScientifique,
+                Commentaires = observation.Commentaires,
+                DateObservation = observation.ObservedAt,
+                EmailObservateur = observation.EmailObservateur,
+                Individus = observation.Individus,
+                NomCommune = observation.NomCommune,
+                IdEspeceObservee = observation.EspeceObserveeId
+            };
         }
     }
 }

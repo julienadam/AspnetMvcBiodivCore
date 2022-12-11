@@ -9,5 +9,6 @@
         public string UrlIconePresence { get; set; }
         public string HabitatAlt { get; set; }
         public string PresenceAlt { get; set; }
+        public IEnumerable<ObservationViewModel> Observations { get; set; } = new List<ObservationViewModel>();
     }
 }

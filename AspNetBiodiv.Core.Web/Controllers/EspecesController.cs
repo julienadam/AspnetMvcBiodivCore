@@ -1,5 +1,6 @@
 ﻿using AspNetBiodiv.Core.Web.Models;
 using AspNetBiodiv.Core.Web.Services.Especes;
+using AspNetBiodiv.Core.Web.Services.Observations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetBiodiv.Core.Web.Controllers
@@ -8,10 +9,12 @@ namespace AspNetBiodiv.Core.Web.Controllers
     public class EspecesController : Controller
     {
         private readonly ITaxonomie taxonomie;
+        private readonly IObservations observations;
 
-        public EspecesController(ITaxonomie taxonomie)
+        public EspecesController(ITaxonomie taxonomie, IObservations observations)
         {
             this.taxonomie = taxonomie ?? throw new ArgumentNullException(nameof(taxonomie));
+            this.observations = observations ?? throw new ArgumentNullException(nameof(observations));
         }
 
         [Route("")]
@@ -29,7 +32,9 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 return NotFound();
             }
 
-            return View(MapEspeceViewModel(espece));
+            var observationsEspece = observations.GetObservationsForEspece(espece.Id);
+
+            return View(MapEspeceViewModel(espece, observationsEspece));
         }
 
         [Route("{nomSci}")]
@@ -40,8 +45,10 @@ namespace AspNetBiodiv.Core.Web.Controllers
             {
                 return NotFound();
             }
+            
+            var observationsEspece = observations.GetObservationsForEspece(espece.Id);
 
-            return View(MapEspeceViewModel(espece));
+            return View(MapEspeceViewModel(espece, observationsEspece));
         }
 
         [Route("tags/{tag}")]
@@ -49,13 +56,13 @@ namespace AspNetBiodiv.Core.Web.Controllers
         {
             var especes = taxonomie
                 .RechercherParTag(tag)
-                .Select(MapEspeceViewModel)
+                .Select(e => MapEspeceViewModel(e))
                 .ToList();
             ViewData["Title"] = $"Recherche par tag {tag}"; 
             return View("Resultats", especes);
         }
 
-        private static EspeceViewModel MapEspeceViewModel(Espece e) =>
+        private static EspeceViewModel MapEspeceViewModel(Espece e, IEnumerable<Observation>? observationsEspece = null) =>
             new()
             {
                 Id = e.Id,
@@ -64,7 +71,9 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 HabitatAlt = e.Habitat.ToString(),
                 UrlIconePresence = $"/img/presence/{char.ToLower((char)(int)e.Presence)}.svg",
                 PresenceAlt = e.Presence.ToString(),
-                UrlInpn = $"https://inpn.mnhn.fr/espece/cd_nom/{e.IdInpn}"
+                UrlInpn = $"https://inpn.mnhn.fr/espece/cd_nom/{e.IdInpn}",
+                Observations = observationsEspece?.Select(ObservationViewModel.FromObservation) 
+                               ?? Enumerable.Empty<ObservationViewModel>()
             };
 
         [Route("{year:int}/{month:int}")]
@@ -77,7 +86,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
 
             var especes = taxonomie
                 .RechercherParMois(year, month)
-                .Select(MapEspeceViewModel)
+                .Select(e => MapEspeceViewModel(e))
                 .ToList();
             ViewData["Title"] = $"Recherche pour {year}/{month}";
             return View("Resultats", especes);

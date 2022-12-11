@@ -42,4 +42,17 @@
             <img src="@Model.UrlIconePresence" width="20" height="20" alt="@Model.PresenceAlt"/>
         </dd>
     </dl>
+    
+    <h2>Observations</h2>
+    <p>
+        @{
+            foreach (var observation in Model.Observations.OrderByDescending(o => o.DateObservation))
+            {
+                <a asp-controller="Observations" asp-action="Details" asp-route-id="@observation.Id">A @observation.NomCommune le @observation.DateObservation</a>
+            <br/>
+            }
+        }
+    </p>
+
+    <a asp-action="Create" asp-controller="Observations" asp-route-id_espece="@Model.Id">Saisir une observation</a>
 </div>
