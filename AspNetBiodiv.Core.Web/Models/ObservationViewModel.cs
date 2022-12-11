@@ -5,7 +5,7 @@ using AspNetBiodiv.Core.Web.Plumbing.Validation;
 
 namespace AspNetBiodiv.Core.Web.Models
 {
-    public class ObservationViewModel
+    public class ObservationViewModel : IValidatableObject
     {
         public int Id { get; set; }
 
@@ -59,6 +59,16 @@ namespace AspNetBiodiv.Core.Web.Models
                 NomCommune = observation.NomCommune,
                 IdEspeceObservee = observation.EspeceObserveeId
             };
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Communes.GetCommunes().Any(c => c.Value == NomCommune))
+            {
+                yield break;
+            }
+
+            yield return new ValidationResult($"Aucune commune nommée {NomCommune}");
         }
     }
 }
