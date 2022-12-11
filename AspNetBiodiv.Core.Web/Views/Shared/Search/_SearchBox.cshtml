@@ -1,0 +1,11 @@
+﻿@model TagSearchViewModel
+
+<form asp-controller="Search" asp-action="Index">
+    <p>Entrez votre requête ci-dessous :</p>
+    @{
+        var q = Model?.Query ?? string.Empty;
+    }
+    @Html.ValidationSummary()
+    <input type="text" value="@q" name="query" id="query"/>
+    <input type="submit" value="Chercher" class="btn btn-primary" />
+</form>
