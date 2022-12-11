@@ -20,7 +20,6 @@ namespace AspNetBiodiv.Core.Web.Controllers
         [Route("{id_espece:int}/saisie")]
         public ActionResult Create(int id_espece)
         {
-            ViewBag.Communes = Communes.GetCommunes();
             var espece = taxonomie.RechercherParId(id_espece);
             var viewModel = new ObservationViewModel(espece.Id, espece.NomScientifique);
             return View(viewModel);
@@ -30,6 +29,11 @@ namespace AspNetBiodiv.Core.Web.Controllers
         [HttpPost]
         public ActionResult Create(int id_espece, ObservationViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
             var espece = taxonomie.RechercherParId(id_espece);
             observations.Create(CreateObservationFromViewModel(id_espece, viewModel, espece));
             return RedirectToAction("Detail", "Especes", new { id = id_espece });
@@ -79,7 +83,6 @@ namespace AspNetBiodiv.Core.Web.Controllers
             var observation = observations.GetById(id);
             if (observation != null)
             {
-                ViewBag.Communes = Communes.GetCommunes();
                 return View(ObservationViewModel.FromObservation(observation));
             }
             else

@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="NomCommune" class="control-label"></label>
-                <select name="NomCommune" class="form-control" asp-items="@ViewBag.Communes"></select>
+                <select name="NomCommune" class="form-control" asp-items="Communes.GetCommunes()"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Commentaires" class="control-label"></label>
