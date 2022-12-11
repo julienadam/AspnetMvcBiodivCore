@@ -1,0 +1,9 @@
+﻿@{
+    ViewData["Title"] = "Confirmation de suppression";
+}
+
+<form asp-controller="Observations" asp-action="Delete" asp-route-id="@ViewBag.Id">
+    <p>Voulez-vous réellement effacer cette observation ?</p>
+    <input type="submit" value="Confirmer" class="btn btn-success"/>
+    <a class="btn btn-danger" asp-controller="Observations" asp-action="Details" asp-route-id="@ViewBag.Id">Annuler</a>
+</form>

@@ -1,4 +1,6 @@
 ﻿using AspNetBiodiv.Core.Web.Services.Especes;
+using Bogus;
+using Bogus.DataSets;
 
 namespace AspNetBiodiv.Core.Web.Services.Observations;
 
@@ -9,7 +11,21 @@ public class FakeObservations : IObservations
     public FakeObservations(ITaxonomie taxonomie)
     {
         this.taxonomie = taxonomie;
+        var espece = taxonomie.RechercherParId(0);
+
+        var faker = new Faker<Observation>()
+            .RuleFor(o => o.Commentaires, f => f.Lorem.Paragraphs(2))
+            .RuleFor(o => o.NomCommune, f => f.PickRandom(Communes.GetCommunes()).Value)
+            .RuleFor(o => o.ObservedAt, f => f.Date.Past())
+            .RuleFor(o => o.EmailObservateur, f => f.Person.Email)
+            .RuleFor(o => o.Individus, f => f.Random.Int(1, 4))
+            .RuleFor(o => o.EspeceObserveeId, f => 0)
+            .RuleFor(o => o.EspeceObservee, f => espece)
+            .RuleFor(o => o.ObservationId, f => f.IndexFaker);
+        
+        observations.AddRange(faker.Generate(7));
     }
+
 
     private int currentId = 876;
     private readonly List<Observation> observations = new();
@@ -43,5 +59,10 @@ public class FakeObservations : IObservations
 
         result.EspeceObservee = e;
         return result;
+    }
+
+    public void Delete(Observation observation)
+    {
+        observations.Remove(observation);
     }
 }

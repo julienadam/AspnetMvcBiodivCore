@@ -5,5 +5,6 @@
         int Create(Observation observation);
         IEnumerable<Observation>? GetObservationsForEspece(int id);
         Observation? GetById(int id);
+        void Delete(Observation observation);
     }
 }

@@ -48,5 +48,5 @@
 </div>
 <div>
     @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
-    <a asp-action="Detail" asp-controller="Especes" asp-route-id="@Model.IdEspeceObservee">Retour à l'espèce</a>
+    <a asp-action="DeleteConfirm" class="btn btn-primary" asp-route-id="@Model.Id">Supprimer</a> | <a class="btn btn-primary" asp-action="Detail" asp-controller="Especes" asp-route-id="@Model.IdEspeceObservee">Retour</a>
 </div>

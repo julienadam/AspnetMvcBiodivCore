@@ -21,20 +21,10 @@ namespace AspNetBiodiv.Core.Web.Controllers
         [Route("{id_espece:int}/saisie")]
         public ActionResult Create(int id_espece)
         {
-            ViewBag.Communes = GetCommunes();
+            ViewBag.Communes = Communes.GetCommunes();
             var espece = taxonomie.RechercherParId(id_espece);
             var viewModel = new ObservationViewModel(espece.Id, espece.NomScientifique);
             return View(viewModel);
-        }
-
-        private static IEnumerable<SelectListItem> GetCommunes()
-        {
-            yield return new SelectListItem { Value = "Aradon", Text = "Aradon" };
-            yield return new SelectListItem { Value = "Arz", Text = "Arz" };
-            yield return new SelectListItem { Value = "Elven", Text = "Elven" };
-            yield return new SelectListItem { Value = "Theix-Noyalo", Text = "Theix-Noyalo" };
-            yield return new SelectListItem { Value = "Trédion", Text = "Trédion" };
-            yield return new SelectListItem { Value = "Vannes", Text = "Vannes" };
         }
 
         [Route("{id_espece:int}/saisie")]
@@ -56,6 +46,30 @@ namespace AspNetBiodiv.Core.Web.Controllers
             return RedirectToAction("Detail", "Especes", new { id = id_espece });
         }
 
+        [Route("{id:int}/confirm-delete")]
+        public ActionResult DeleteConfirm(int id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
+        [Route("{id:int}/delete")]
+        public ActionResult Delete(int id)
+        {
+            var observation = observations.GetById(id);
+            if (observation != null)
+            {
+                observations.Delete(observation);
+                var especeId = observation.EspeceObserveeId;
+                return RedirectToAction("Detail", "Especes", new { id = especeId });
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [Route("")]
         public ActionResult Details(int id)
         {
             var obs = observations.GetById(id);
@@ -71,7 +85,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
         {
             return new ObservationViewModel
             {
-                NomEspeceObservee = observation.EspeceObservee?.NomScientifique,
+                NomEspeceObservee = observation.EspeceObservee.NomScientifique,
                 NomCommune = observation.NomCommune,
                 Commentaires = observation.Commentaires,
                 Individus = observation.Individus,
@@ -81,21 +95,6 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 IdEspeceObservee = observation.EspeceObserveeId
             };
         }
-
-        //// GET: Observations
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
-
-        //// GET: Observations/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
-
-
-
 
         //// GET: Observations/Edit/5
         //public ActionResult Edit(int id)
@@ -110,28 +109,6 @@ namespace AspNetBiodiv.Core.Web.Controllers
         //    try
         //    {
         //        // TODO: Add update logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: Observations/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: Observations/Delete/5
-        //[HttpPost]
-        //public ActionResult Delete(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add delete logic here
 
         //        return RedirectToAction("Index");
         //    }
