@@ -83,4 +83,9 @@ public class FakeObservations : IObservations
         return observations.Count(o =>
             o.EmailObservateur == email && o.PostedAt.Date == DateTime.Now.Date);
     }
+
+    private static readonly Random Rnd = new();
+
+    public Observation GetRandom() => 
+        observations[Rnd.Next(0, observations.Count)];
 }

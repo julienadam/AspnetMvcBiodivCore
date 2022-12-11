@@ -1,0 +1,9 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using AspNetBiodiv.Core.Web.Plumbing.TagHelpers
+@model AspNetBiodiv.Core.Web.Components.RandomEspeceViewModel
+
+<h2>Une espèce au hasard !</h2>
+<a asp-controller="Especes" asp-action="Detail" asp-route-id="@Model.Id">
+    @Model.NomScientifique
+</a>
+<inpn code="@Model.CodeInpn"></inpn>
