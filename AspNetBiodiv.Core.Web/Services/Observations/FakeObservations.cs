@@ -30,10 +30,18 @@ public class FakeObservations : IObservations
     public Observation? GetById(int id)
     {
         var result = observations.SingleOrDefault(o => o.ObservationId == id);
-        if (result != null)
+        if (result == null)
         {
-            result.EspeceObservee = taxonomie.RechercherParId(result.EspeceObserveeId);
+            return result;
         }
+        
+        var e = taxonomie.RechercherParId(result.EspeceObserveeId);
+        if (e == null)
+        {
+            throw new KeyNotFoundException($"Aucune espèce avec l'id {id}");
+        }
+
+        result.EspeceObservee = e;
         return result;
     }
 }
