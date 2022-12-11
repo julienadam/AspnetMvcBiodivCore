@@ -6,7 +6,14 @@
 
 <h2>Recherche de tags</h2>
 
-<partial for="@Model" name="Search/_SearchBox"/>
+<form asp-controller="Search" asp-action="Index">
+    @{
+        var q = Model?.Query ?? string.Empty;
+    }
+    @Html.ValidationSummary()
+    <input type="text" value="@q" name="query" id="query" />
+    <input type="submit" value="Chercher" class="btn btn-primary" />
+</form>
 
 @if (Model?.Results != null)
 {
