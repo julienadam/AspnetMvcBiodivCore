@@ -65,4 +65,16 @@ public class FakeObservations : IObservations
     {
         observations.Remove(observation);
     }
+
+    public void Update(Observation observation)
+    {
+        var e = GetById(observation.ObservationId);
+        if (e == null)
+        {
+            return;
+        }
+
+        Delete(e);
+        observations.Add(observation);
+    }
 }

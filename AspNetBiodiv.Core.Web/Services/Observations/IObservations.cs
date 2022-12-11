@@ -6,5 +6,6 @@
         IEnumerable<Observation>? GetObservationsForEspece(int id);
         Observation? GetById(int id);
         void Delete(Observation observation);
+        void Update(Observation observation);
     }
 }

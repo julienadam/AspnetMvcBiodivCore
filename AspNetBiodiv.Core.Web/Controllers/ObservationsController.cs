@@ -2,7 +2,6 @@
 using AspNetBiodiv.Core.Web.Services.Especes;
 using AspNetBiodiv.Core.Web.Services.Observations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AspNetBiodiv.Core.Web.Controllers
 {
@@ -32,7 +31,13 @@ namespace AspNetBiodiv.Core.Web.Controllers
         public ActionResult Create(int id_espece, ObservationViewModel viewModel)
         {
             var espece = taxonomie.RechercherParId(id_espece);
-            observations.Create(new Observation
+            observations.Create(CreateObservationFromViewModel(id_espece, viewModel, espece));
+            return RedirectToAction("Detail", "Especes", new { id = id_espece });
+        }
+
+        private static Observation CreateObservationFromViewModel(int id_espece, ObservationViewModel viewModel, Espece? espece)
+        {
+            return new Observation
             {
                 Commentaires = viewModel.Commentaires,
                 EspeceObserveeId = id_espece,
@@ -41,9 +46,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 Individus = viewModel.Individus,
                 ObservedAt = viewModel.DateObservation,
                 EspeceObservee = espece
-            });
-
-            return RedirectToAction("Detail", "Especes", new { id = id_espece });
+            };
         }
 
         [Route("{id:int}/confirm-delete")]
@@ -67,6 +70,38 @@ namespace AspNetBiodiv.Core.Web.Controllers
             {
                 return NotFound();
             }
+        }
+
+
+        [Route("{id:int}/edit")]
+        public ActionResult Edit(int id)
+        {
+            var observation = observations.GetById(id);
+            if (observation != null)
+            {
+                ViewBag.Communes = Communes.GetCommunes();
+                return View(ObservationViewModel.FromObservation(observation));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [Route("{id:int}/edit")]
+        [HttpPost]
+        public ActionResult Edit(ObservationViewModel input, int id)
+        {
+            var existing = observations.GetById(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            var observation = CreateObservationFromViewModel(existing.EspeceObserveeId, input, existing.EspeceObservee);
+            observation.ObservationId = id;
+            observations.Update(observation);
+            return RedirectToAction("Detail", "Especes", new { id = observation.EspeceObserveeId });
         }
 
         [Route("")]
