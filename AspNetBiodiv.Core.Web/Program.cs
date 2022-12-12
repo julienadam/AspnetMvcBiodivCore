@@ -1,6 +1,7 @@
 using AspNetBiodiv.Core.Web.Services;
 using AspNetBiodiv.Core.Web.Services.Especes;
 using AspNetBiodiv.Core.Web.Services.Observations;
+using AspNetBiodiv.Core.Web.Services.Statistiques;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<ITaxonomie, BogusTaxonomie>();
 builder.Services.AddSingleton<IObservations, FakeObservations>();
 builder.Services.AddSingleton<ICommunes, StaticCommunes>();
+builder.Services.AddSingleton<IStatisticsService, StatisticsService>();
+builder.Services.AddRazorPages();
+
 
 var app = builder.Build();
 
@@ -24,7 +28,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.MapRazorPages();
 app.UseAuthorization();
 
 app.MapControllerRoute(

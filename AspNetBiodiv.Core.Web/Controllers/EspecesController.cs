@@ -17,7 +17,6 @@ namespace AspNetBiodiv.Core.Web.Controllers
             this.observations = observations ?? throw new ArgumentNullException(nameof(observations));
         }
 
-        [Route("")]
         public IActionResult Index()
         {
             return View();

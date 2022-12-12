@@ -1,0 +1,36 @@
+﻿@page
+@model AspNetBiodiv.Core.Web.Pages.Statistiques.IndexModel
+
+<form method="post">
+    <p asp-validation-summary="All"></p>
+    <label asp-for="DateDebut"></label>
+    <input asp-for="DateDebut" />
+    <label asp-for="DateFin"></label>
+    <input asp-for="DateFin" />
+    <input type="submit" value="Générer" class="btn btn-primary" />
+</form>
+
+<hr />
+
+@if (Model.Statistics != null)
+{
+    <p>
+        Espèces uniques : @Model.Statistics.EspecesUniques<br />
+        Nombre d'observations sur la période : @Model.Statistics.NbObservations<br />
+        Nombre d'observateurs uniques : @Model.Statistics.ObservateursUniques<br />
+
+        @foreach (var (k, v) in Model.Statistics.ObservationsParVille)
+        {
+            <span>
+                Observations pour @k : @v
+            </span>
+
+            <br />
+        }
+    </p>
+}
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
