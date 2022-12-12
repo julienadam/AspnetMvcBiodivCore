@@ -1,3 +1,4 @@
+using AspNetBiodiv.Core.Web.Plumbing.Middleware;
 using AspNetBiodiv.Core.Web.Services;
 using AspNetBiodiv.Core.Web.Services.Especes;
 using AspNetBiodiv.Core.Web.Services.Observations;
@@ -11,10 +12,13 @@ builder.Services.AddSingleton<ITaxonomie, BogusTaxonomie>();
 builder.Services.AddSingleton<IObservations, FakeObservations>();
 builder.Services.AddSingleton<ICommunes, StaticCommunes>();
 builder.Services.AddSingleton<IStatisticsService, StatisticsService>();
+builder.Services.AddSingleton<AcmeVersionMiddleware>(); 
 builder.Services.AddRazorPages();
 
 
 var app = builder.Build();
+
+app.UseAcmeVersion();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
