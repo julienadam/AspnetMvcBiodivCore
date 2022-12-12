@@ -1,5 +1,8 @@
 ﻿using AspNetBiodiv.Core.Web.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace AspNetBiodiv.Core.Web.Services.Especes;
 
@@ -15,10 +18,12 @@ public interface ITaxonomie
 public class DbTaxonomie : ITaxonomie
 {
     private readonly EspecesContext context;
+    private readonly IDistributedCache cache;
 
-    public DbTaxonomie(EspecesContext context)
+    public DbTaxonomie(EspecesContext context, IDistributedCache cache)
     {
         this.context = context ?? throw new ArgumentNullException(nameof(context));
+        this.cache = cache;
     }
 
     public Espece? RechercherParId(int id) => 
@@ -45,9 +50,20 @@ public class DbTaxonomie : ITaxonomie
 
     public IEnumerable<string> RechercheDeTags(string query)
     {
-        return context.Tags
+        var cacheKey = "Query:" + query;
+        var cached = cache.GetString(cacheKey);
+        if (cached != null)
+        {
+            return JsonSerializer.Deserialize<List<string>>(cached);
+        }
+
+        var result = context.Tags
             .Where(t => t.Nom.Contains(query.ToLower()))
             .Select(t => t.Nom)
             .ToList();
+
+        cache.SetString(cacheKey, JsonSerializer.Serialize(result));
+
+        return result;
     }
 }

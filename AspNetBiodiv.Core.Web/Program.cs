@@ -35,6 +35,7 @@ builder.Services.AddSingleton<IStatisticsService, StatisticsService>();
 builder.Services.AddSingleton<AcmeVersionMiddleware>(); 
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
+builder.Services.AddDistributedMemoryCache();
 
 var app = builder.Build();
 
