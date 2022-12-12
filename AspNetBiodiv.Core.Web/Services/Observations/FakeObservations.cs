@@ -8,14 +8,14 @@ public class FakeObservations : IObservations
 {
     private readonly ITaxonomie taxonomie;
 
-    public FakeObservations(ITaxonomie taxonomie)
+    public FakeObservations(ITaxonomie taxonomie, ICommunes communes)
     {
         this.taxonomie = taxonomie;
         var espece = taxonomie.RechercherParId(0);
 
         var faker = new Faker<Observation>()
             .RuleFor(o => o.Commentaires, f => f.Lorem.Paragraphs(2))
-            .RuleFor(o => o.NomCommune, f => f.PickRandom(Communes.GetCommunes()).Value)
+            .RuleFor(o => o.NomCommune, f => f.PickRandom(communes.GetCommunes()))
             .RuleFor(o => o.ObservedAt, f => f.Date.Past())
             .RuleFor(o => o.EmailObservateur, f => f.Person.Email)
             .RuleFor(o => o.Individus, f => f.Random.Int(1, 4))

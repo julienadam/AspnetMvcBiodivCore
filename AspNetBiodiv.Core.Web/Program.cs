@@ -1,3 +1,4 @@
+using AspNetBiodiv.Core.Web.Services;
 using AspNetBiodiv.Core.Web.Services.Especes;
 using AspNetBiodiv.Core.Web.Services.Observations;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<ITaxonomie, BogusTaxonomie>();
 builder.Services.AddSingleton<IObservations, FakeObservations>();
+builder.Services.AddSingleton<ICommunes, StaticCommunes>();
 
 var app = builder.Build();
 

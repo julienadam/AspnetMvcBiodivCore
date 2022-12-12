@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using AspNetBiodiv.Core.Web.Services.Observations;
 using AspNetBiodiv.Core.Web.Plumbing.Validation;
+using AspNetBiodiv.Core.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetBiodiv.Core.Web.Models
@@ -67,7 +68,7 @@ namespace AspNetBiodiv.Core.Web.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Communes.GetCommunes().Any(c => c.Value == NomCommune))
+            if (new StaticCommunes().GetCommunes().Any(c => c == NomCommune))
             {
                 yield break;
             }
