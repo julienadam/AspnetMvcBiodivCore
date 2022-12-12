@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AspNetBiodiv.Core.Web.Pages.Statistiques
 {
-    public class IndexModel : PageModel, IValidatableObject
+    public class IndexModel : PageModel
     {
         private readonly IStatisticsService statisticsService;
 
@@ -15,9 +15,34 @@ namespace AspNetBiodiv.Core.Web.Pages.Statistiques
             this.statisticsService = statisticsService;
         }
 
+        public class InputModel : IValidatableObject
+        {
+            [DisplayName("Date de début")]
+            [DataType(DataType.Date)]
+            [Required]
+            public DateTime? DateDebut { get; set; } = DateTime.Now.AddMonths(-1).Date;
+
+            [DisplayName("Date de fin")]
+            [DataType(DataType.Date)]
+            [Required]
+            public DateTime? DateFin { get; set; } = DateTime.Now.Date;
+
+            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+            {
+                if (DateFin <= DateDebut)
+                {
+                    yield return new ValidationResult("Date de fin doit être après la date de début",
+                        new[] { nameof(DateDebut) });
+                }
+            }
+        }
+
         public void OnGet()
         {
         }
+
+        [BindProperty]
+        public InputModel Input { get; set; } = new();
 
         public IActionResult OnPost()
         {
@@ -26,39 +51,19 @@ namespace AspNetBiodiv.Core.Web.Pages.Statistiques
                 return Page();
             }
 
-            if (DateDebut is null || DateFin is null)
+            if (Input.DateDebut is null || Input.DateFin is null)
             {
                 return RedirectToPage();
             }
 
-            var stats = statisticsService.GetStatsForPeriod(DateDebut.Value, DateFin.Value);
+            var stats = statisticsService.GetStatsForPeriod(Input.DateDebut.Value, Input.DateFin.Value);
             Statistics = stats;
 
             return Page();
         }
 
-        [DisplayName("Date de début")]
-        [DataType(DataType.Date)]
-        [Required]
-        [BindProperty]
-        public DateTime? DateDebut { get; set; } = DateTime.Now.AddMonths(-1).Date;
-
-        [DisplayName("Date de fin")]
-        [DataType(DataType.Date)]
-        [Required]
-        [BindProperty]
-        public DateTime? DateFin { get; set; } = DateTime.Now.Date;
-
+       
         public UsageStatistics? Statistics { get; set; }
 
-
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (DateFin <= DateDebut)
-            {
-                yield return new ValidationResult("Date de fin doit être après la date de début",
-                    new[] { nameof(DateDebut), nameof(DateFin) });
-            }
-        }
     }
 }

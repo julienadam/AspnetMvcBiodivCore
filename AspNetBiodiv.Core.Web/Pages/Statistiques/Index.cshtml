@@ -2,12 +2,12 @@
 @model AspNetBiodiv.Core.Web.Pages.Statistiques.IndexModel
 
 <form method="post">
-    <p asp-validation-summary="All"></p>
-    <label asp-for="DateDebut"></label>
-    <input asp-for="DateDebut" />
-    <label asp-for="DateFin"></label>
-    <input asp-for="DateFin" />
-    <input type="submit" value="Générer" class="btn btn-primary" />
+    <div asp-validation-summary="All"></div>
+    <label asp-for="Input.DateDebut"></label>
+    <input asp-for="Input.DateDebut"/>
+    <label asp-for="Input.DateFin"></label>
+    <input asp-for="Input.DateFin"/>
+    <input type="submit" value="Générer" class="btn btn-primary"/>
 </form>
 
 <hr />
