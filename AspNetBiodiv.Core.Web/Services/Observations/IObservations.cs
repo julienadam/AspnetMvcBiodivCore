@@ -10,6 +10,6 @@ namespace AspNetBiodiv.Core.Web.Services.Observations
         void Delete(Observation observation);
         void Update(Observation observation);
         int NumberOfObservationsToday(string email);
-        Observation GetRandom();
+        Observation? GetRandom();
     }
 }

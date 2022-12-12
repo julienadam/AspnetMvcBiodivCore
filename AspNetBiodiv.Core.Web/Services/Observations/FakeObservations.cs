@@ -1,7 +1,6 @@
 ﻿using AspNetBiodiv.Core.Web.Entities;
 using AspNetBiodiv.Core.Web.Services.Especes;
 using Bogus;
-using Bogus.DataSets;
 
 namespace AspNetBiodiv.Core.Web.Services.Observations;
 
@@ -87,6 +86,6 @@ public class FakeObservations : IObservations
 
     private static readonly Random Rnd = new();
 
-    public Observation GetRandom() => 
+    public Observation? GetRandom() => 
         observations[Rnd.Next(0, observations.Count)];
 }
