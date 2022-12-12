@@ -62,7 +62,7 @@ namespace AspNetBiodiv.Core.Web.Models
                 EmailObservateur = observation.EmailObservateur,
                 Individus = observation.Individus,
                 NomCommune = observation.NomCommune,
-                IdEspeceObservee = observation.EspeceObserveeId
+                IdEspeceObservee = observation.EspeceObserveeEspeceId
             };
         }
 

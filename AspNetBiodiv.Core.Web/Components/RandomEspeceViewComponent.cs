@@ -23,13 +23,26 @@ namespace AspNetBiodiv.Core.Web.Components
         public IViewComponentResult Invoke()
         {
             var o = observations.GetRandom();
-            var espece = o.EspeceObservee;
-            var vm = new RandomEspeceViewModel
+            RandomEspeceViewModel vm;
+            if (o == null)
             {
-                Id = espece.EspeceId,
-                CodeInpn = espece.IdInpn,
-                NomScientifique = espece.NomScientifique
-            };
+                vm = new RandomEspeceViewModel
+                {
+                    Id = 1,
+                    CodeInpn = 1,
+                    NomScientifique = "Place Holder"
+                };
+            }
+            else
+            {
+                var espece = o.EspeceObservee;
+                vm = new RandomEspeceViewModel
+                {
+                    Id = espece.EspeceId,
+                    CodeInpn = espece.IdInpn,
+                    NomScientifique = espece.NomScientifique
+                };
+            }
             return View("_Random", vm);
         }
     }

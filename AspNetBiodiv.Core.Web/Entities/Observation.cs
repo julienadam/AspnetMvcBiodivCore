@@ -20,7 +20,7 @@ namespace AspNetBiodiv.Core.Web.Entities
         public string? Commentaires { get; set; }
 
         [ForeignKey(nameof(EspeceObservee))]
-        public int EspeceObserveeId { get; set; }
+        public int EspeceObserveeEspeceId { get; set; }
 
         public virtual Espece EspeceObservee { get; set; }
     }

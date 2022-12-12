@@ -1,15 +1,35 @@
+using AspNetBiodiv.Core.Web.Entities;
 using AspNetBiodiv.Core.Web.Plumbing.Middleware;
 using AspNetBiodiv.Core.Web.Services;
 using AspNetBiodiv.Core.Web.Services.Especes;
 using AspNetBiodiv.Core.Web.Services.Observations;
 using AspNetBiodiv.Core.Web.Services.Statistiques;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<ITaxonomie, BogusTaxonomie>();
-builder.Services.AddSingleton<IObservations, FakeObservations>();
+
+if (builder.Configuration["USE_FAKES"] == "1")
+{
+    builder.Services.AddSingleton<ITaxonomie, BogusTaxonomie>();
+    builder.Services.AddSingleton<IObservations, FakeObservations>();
+}
+else
+{
+    builder.Services.AddDbContext<EspecesContext>(options =>
+    {
+        options
+            .UseSqlServer(builder.Configuration.GetConnectionString("Especes"))
+            .EnableDetailedErrors();
+    });
+
+
+    builder.Services.AddScoped<ITaxonomie, DbTaxonomie>();
+    builder.Services.AddScoped<IObservations, DbObservations>();
+}
+
 builder.Services.AddSingleton<ICommunes, StaticCommunes>();
 builder.Services.AddSingleton<IStatisticsService, StatisticsService>();
 builder.Services.AddSingleton<AcmeVersionMiddleware>(); 

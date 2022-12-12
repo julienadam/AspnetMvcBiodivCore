@@ -34,7 +34,7 @@ public class DbTaxonomie : ITaxonomie
             .Include(e => e.Tags)
             .Where(e =>
                 e.Tags
-                    .Any(t => string.Equals(t.Nom, tag, StringComparison.CurrentCultureIgnoreCase)));
+                    .Any(t => t.Nom.ToLower()  == tag.ToLower()));
 
     }   
 
@@ -46,7 +46,7 @@ public class DbTaxonomie : ITaxonomie
     public IEnumerable<string> RechercheDeTags(string query)
     {
         return context.Tags
-            .Where(t => t.Nom.Contains(query, StringComparison.CurrentCultureIgnoreCase))
+            .Where(t => t.Nom.Contains(query.ToLower()))
             .Select(t => t.Nom)
             .ToList();
     }

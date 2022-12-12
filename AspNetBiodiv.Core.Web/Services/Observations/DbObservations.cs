@@ -23,7 +23,7 @@ public class DbObservations : IObservations
     {
         return context.Observations
             .Include(o => o.EspeceObservee)
-            .Where(o => o.EspeceObserveeId == id)
+            .Where(o => o.EspeceObserveeEspeceId == id)
             .ToList();
     }
 
@@ -53,7 +53,7 @@ public class DbObservations : IObservations
 
         return context.Observations.Count(
             o =>
-                string.Equals(o.EmailObservateur, email, StringComparison.CurrentCultureIgnoreCase)
+                (o.EmailObservateur.ToLower() == email.ToLower())
                 && o.PostedAt >= today && o.PostedAt <= tomorrow);
     }
 
@@ -65,6 +65,11 @@ public class DbObservations : IObservations
             .OrderByDescending(o => o.ObservationId)
             .Select(o => o.ObservationId)
             .FirstOrDefault();
+
+        if (last == 0)
+        {
+            return null;
+        }
 
         var rndId = random.Next(1, last);
         return context.Observations.FirstOrDefault(o => o.ObservationId == rndId);

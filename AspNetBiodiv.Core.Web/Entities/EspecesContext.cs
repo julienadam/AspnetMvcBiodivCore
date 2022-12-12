@@ -4,34 +4,16 @@ namespace AspNetBiodiv.Core.Web.Entities;
 
 public partial class EspecesContext : DbContext
 {
-    private readonly bool showLogs;
-
-    public EspecesContext(bool showLogs = false)
+    public EspecesContext()
     {
-        this.showLogs = showLogs;
+
     }
+
 
     public EspecesContext(DbContextOptions<EspecesContext> options)
         : base(options)
     {
         
-    }
-
-    private static readonly ILoggerFactory Logs = LoggerFactory.Create(builder => builder.AddConsole());
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-    {
-        var builder = optionsBuilder
-            .UseSqlServer(
-                "Data Source=.\\SQLEXPRESS;Initial Catalog=Especes;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework; TrustServerCertificate=True");
-
-        if (showLogs)
-        {
-            builder
-                .UseLoggerFactory(Logs)
-                .EnableSensitiveDataLogging();
-        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

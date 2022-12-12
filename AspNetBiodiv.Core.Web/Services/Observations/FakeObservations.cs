@@ -19,7 +19,7 @@ public class FakeObservations : IObservations
             .RuleFor(o => o.ObservedAt, f => f.Date.Past())
             .RuleFor(o => o.EmailObservateur, f => f.Person.Email)
             .RuleFor(o => o.Individus, f => f.Random.Int(1, 4))
-            .RuleFor(o => o.EspeceObserveeId, f => 0)
+            .RuleFor(o => o.EspeceObserveeEspeceId, f => 0)
             .RuleFor(o => o.EspeceObservee, f => espece)
             .RuleFor(o => o.ObservationId, f => f.IndexFaker);
         
@@ -40,7 +40,7 @@ public class FakeObservations : IObservations
 
     public IEnumerable<Observation>? GetObservationsForEspece(int id)
     {
-        return observations.Where(o => o.EspeceObserveeId == id);
+        return observations.Where(o => o.EspeceObserveeEspeceId == id);
     }
 
     public Observation? GetById(int id)
@@ -51,7 +51,7 @@ public class FakeObservations : IObservations
             return result;
         }
         
-        var e = taxonomie.RechercherParId(result.EspeceObserveeId);
+        var e = taxonomie.RechercherParId(result.EspeceObserveeEspeceId);
         if (e == null)
         {
             throw new KeyNotFoundException($"Aucune espèce avec l'id {id}");

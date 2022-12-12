@@ -54,7 +54,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
             {
                 PostedAt = viewModel.DateCreation ?? DateTime.Now,
                 Commentaires = viewModel.Commentaires ?? "",
-                EspeceObserveeId = id_espece,
+                EspeceObserveeEspeceId = id_espece,
                 EmailObservateur = viewModel.EmailObservateur,
                 NomCommune = viewModel.NomCommune,
                 Individus = viewModel.Individus,
@@ -77,7 +77,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
             if (observation != null)
             {
                 observations.Delete(observation);
-                var especeId = observation.EspeceObserveeId;
+                var especeId = observation.EspeceObserveeEspeceId;
                 return RedirectToAction("Detail", "Especes", new { id = especeId });
             }
             else
@@ -122,10 +122,10 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 return View(input);
             }
 
-            var observation = CreateObservationFromViewModel(existing.EspeceObserveeId, input, existing.EspeceObservee);
+            var observation = CreateObservationFromViewModel(existing.EspeceObserveeEspeceId, input, existing.EspeceObservee);
             observation.ObservationId = id;
             observations.Update(observation);
-            return RedirectToAction("Detail", "Especes", new { id = observation.EspeceObserveeId });
+            return RedirectToAction("Detail", "Especes", new { id = observation.EspeceObserveeEspeceId });
         }
 
         [Route("{id:int}")]
@@ -152,7 +152,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 DateObservation = observation.ObservedAt,
                 EmailObservateur = observation.EmailObservateur,
                 Id = observation.ObservationId,
-                IdEspeceObservee = observation.EspeceObserveeId
+                IdEspeceObservee = observation.EspeceObserveeEspeceId
             };
         }
 
