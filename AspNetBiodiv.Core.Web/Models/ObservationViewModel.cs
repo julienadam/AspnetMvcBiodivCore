@@ -31,8 +31,7 @@ namespace AspNetBiodiv.Core.Web.Models
         [Required(ErrorMessage = "Choisissez une ville dans la liste")]
         public string NomCommune { get; set; } = string.Empty;
 
-        [DataType(DataType.MultilineText)]
-        public string? Commentaires { get; set; }
+        [DataType(DataType.MultilineText)] public string? Commentaires { get; set; }
 
         public int IdEspeceObservee { get; set; }
 
@@ -73,7 +72,9 @@ namespace AspNetBiodiv.Core.Web.Models
                 yield break;
             }
 
-            yield return new ValidationResult($"Aucune commune nommée {NomCommune}");
+            yield return new ValidationResult(
+                $"Aucune commune nommée {NomCommune}", 
+                new[] { nameof(NomCommune) });
         }
     }
 }
