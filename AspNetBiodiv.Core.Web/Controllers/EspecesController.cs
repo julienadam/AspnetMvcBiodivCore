@@ -1,4 +1,5 @@
-﻿using AspNetBiodiv.Core.Web.Models;
+﻿using AspNetBiodiv.Core.Web.Entities;
+using AspNetBiodiv.Core.Web.Models;
 using AspNetBiodiv.Core.Web.Services.Especes;
 using AspNetBiodiv.Core.Web.Services.Observations;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 return NotFound();
             }
 
-            var observationsEspece = observations.GetObservationsForEspece(espece.Id);
+            var observationsEspece = observations.GetObservationsForEspece(espece.EspeceId);
 
             return View(MapEspeceViewModel(espece, observationsEspece));
         }
@@ -45,7 +46,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
                 return NotFound();
             }
             
-            var observationsEspece = observations.GetObservationsForEspece(espece.Id);
+            var observationsEspece = observations.GetObservationsForEspece(espece.EspeceId);
 
             return View(MapEspeceViewModel(espece, observationsEspece));
         }
@@ -64,12 +65,12 @@ namespace AspNetBiodiv.Core.Web.Controllers
         private static EspeceViewModel MapEspeceViewModel(Espece e, IEnumerable<Observation>? observationsEspece = null) =>
             new()
             {
-                Id = e.Id,
+                Id = e.EspeceId,
                 NomScientifique = e.NomScientifique,
                 UrlIconeHabitat = $"/img/habitat/{e.Habitat.ToString().ToLowerInvariant()}.png",
                 HabitatAlt = e.Habitat.ToString(),
-                UrlIconePresence = $"/img/presence/{char.ToLower((char)(int)e.Presence)}.svg",
-                PresenceAlt = e.Presence.ToString(),
+                UrlIconePresence = $"/img/presence/{char.ToLower((char)(int)e.PresenceEnMetropole)}.svg",
+                PresenceAlt = e.PresenceEnMetropole.ToString(),
                 CodeInpn = e.IdInpn,
                 Observations = observationsEspece?.Select(ObservationViewModel.FromObservation) 
                                ?? Enumerable.Empty<ObservationViewModel>()

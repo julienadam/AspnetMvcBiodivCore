@@ -1,4 +1,6 @@
-﻿namespace AspNetBiodiv.Core.Web.Services.Especes;
+﻿using AspNetBiodiv.Core.Web.Entities;
+
+namespace AspNetBiodiv.Core.Web.Services.Especes;
 
 public interface ITaxonomie
 {

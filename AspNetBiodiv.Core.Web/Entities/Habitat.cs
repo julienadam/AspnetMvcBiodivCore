@@ -1,7 +1,7 @@
-﻿namespace AspNetBiodiv.Core.Web.Services.Especes;
-
-public enum Habitat
+namespace AspNetBiodiv.Core.Web.Entities
 {
+  public enum Habitat
+  {
     Marin = 1,
     EauDouce = 2,
     Terrestre = 3,
@@ -10,4 +10,5 @@ public enum Habitat
     EauSaumâtre = 6,
     TerrestreEtOuEauDouce = 7,
     TerrestreEtEauDouce = 8,
+  }
 }

@@ -1,4 +1,5 @@
-﻿using AspNetBiodiv.Core.Web.Services.Especes;
+﻿using AspNetBiodiv.Core.Web.Entities;
+using AspNetBiodiv.Core.Web.Services.Especes;
 using Bogus;
 using Bogus.DataSets;
 

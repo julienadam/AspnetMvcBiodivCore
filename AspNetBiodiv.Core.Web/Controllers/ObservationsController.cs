@@ -1,4 +1,5 @@
-﻿using AspNetBiodiv.Core.Web.Models;
+﻿using AspNetBiodiv.Core.Web.Entities;
+using AspNetBiodiv.Core.Web.Models;
 using AspNetBiodiv.Core.Web.Services.Especes;
 using AspNetBiodiv.Core.Web.Services.Observations;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
         public ActionResult Create(int id_espece)
         {
             var espece = taxonomie.RechercherParId(id_espece);
-            var viewModel = new ObservationViewModel(espece.Id, espece.NomScientifique)
+            var viewModel = new ObservationViewModel(espece.EspeceId, espece.NomScientifique)
             {
                 DateCreation = DateTime.Now
             };

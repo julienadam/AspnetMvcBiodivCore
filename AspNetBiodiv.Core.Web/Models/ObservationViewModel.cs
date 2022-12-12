@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using AspNetBiodiv.Core.Web.Entities;
 using AspNetBiodiv.Core.Web.Services.Observations;
 using AspNetBiodiv.Core.Web.Plumbing.Validation;
 using AspNetBiodiv.Core.Web.Services;

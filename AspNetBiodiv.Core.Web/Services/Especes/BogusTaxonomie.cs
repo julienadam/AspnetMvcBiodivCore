@@ -1,4 +1,5 @@
-﻿using Bogus;
+﻿using AspNetBiodiv.Core.Web.Entities;
+using Bogus;
 
 namespace AspNetBiodiv.Core.Web.Services.Especes
 {
@@ -9,13 +10,13 @@ namespace AspNetBiodiv.Core.Web.Services.Especes
         public BogusTaxonomie()
         {
             var faker = new Faker<Espece>("fr")
-                .RuleFor(e => e.Id, f => f.IndexFaker)
+                .RuleFor(e => e.EspeceId, f => f.IndexFaker)
                 .RuleFor(e => e.NomScientifique, GenerateNomScientifique)
                 .RuleFor(e => e.Habitat, f => f.PickRandom<Habitat>())
-                .RuleFor(e => e.Presence, f => f.PickRandom<EtatPresence>())
+                .RuleFor(e => e.PresenceEnMetropole, f => f.PickRandom<EtatPresence>())
                 .RuleFor(e => e.IdInpn, f => f.UniqueIndex);
 
-            especes = faker.Generate(10).ToDictionary(e => e.Id);
+            especes = faker.Generate(10).ToDictionary(e => e.EspeceId);
         }
 
         private static string GenerateNomScientifique(Faker f) =>

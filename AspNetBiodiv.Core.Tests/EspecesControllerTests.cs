@@ -1,4 +1,5 @@
 using AspNetBiodiv.Core.Web.Controllers;
+using AspNetBiodiv.Core.Web.Entities;
 using AspNetBiodiv.Core.Web.Models;
 using AspNetBiodiv.Core.Web.Services.Especes;
 using AspNetBiodiv.Core.Web.Services.Observations;
@@ -23,14 +24,14 @@ public class EspecesControllerTests
     [Fact]
     public void Les_details_sont_retournes_pour_un_id_d_une_espece_existante()
     {
-        var espece = new Espece { Id = 42, NomScientifique = "foo bar"};
+        var espece = new Espece { EspeceId = 42, NomScientifique = "foo bar"};
         taxonomie.Setup(x => x.RechercherParId(42)).Returns(espece);
 
         var result = controller.Detail(42);
 
         var view = Assert.IsType<ViewResult>(result);
         var vm = Assert.IsType<EspeceViewModel>(view.Model);
-        Assert.Equal(espece.Id, vm.Id);
+        Assert.Equal(espece.EspeceId, vm.Id);
         Assert.Equal(espece.NomScientifique, vm.NomScientifique);
     }
 

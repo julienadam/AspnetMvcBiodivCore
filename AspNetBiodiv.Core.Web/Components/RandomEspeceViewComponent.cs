@@ -26,7 +26,7 @@ namespace AspNetBiodiv.Core.Web.Components
             var espece = o.EspeceObservee;
             var vm = new RandomEspeceViewModel
             {
-                Id = espece.Id,
+                Id = espece.EspeceId,
                 CodeInpn = espece.IdInpn,
                 NomScientifique = espece.NomScientifique
             };

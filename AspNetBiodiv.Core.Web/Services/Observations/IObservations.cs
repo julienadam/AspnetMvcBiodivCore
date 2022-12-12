@@ -1,4 +1,6 @@
-﻿namespace AspNetBiodiv.Core.Web.Services.Observations
+﻿using AspNetBiodiv.Core.Web.Entities;
+
+namespace AspNetBiodiv.Core.Web.Services.Observations
 {
     public interface IObservations
     {
