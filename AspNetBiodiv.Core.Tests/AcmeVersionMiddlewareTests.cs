@@ -1,5 +1,6 @@
 ﻿using AspNetBiodiv.Core.Web.Plumbing.Middleware;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace AspNetBiodiv.Core.Tests;
