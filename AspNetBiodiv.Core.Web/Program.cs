@@ -34,7 +34,7 @@ builder.Services.AddSingleton<ICommunes, StaticCommunes>();
 builder.Services.AddSingleton<IStatisticsService, StatisticsService>();
 builder.Services.AddSingleton<AcmeVersionMiddleware>(); 
 builder.Services.AddRazorPages();
-
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -52,6 +52,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 app.MapRazorPages();
 app.UseAuthorization();
 
