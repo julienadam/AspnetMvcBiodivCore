@@ -3,6 +3,10 @@
 
 @{
     ViewData["Title"] = Model.NomScientifique;
+    if (TempData["ThankYou"] != null)
+    {
+        <h2>@TempData["ThankYou"]</h2>
+    }
 }
 
 <h1>Details</h1>

@@ -45,6 +45,7 @@ namespace AspNetBiodiv.Core.Web.Controllers
             
             var espece = taxonomie.RechercherParId(id_espece);
             observations.Create(CreateObservationFromViewModel(id_espece, viewModel, espece));
+            TempData["ThankYou"] = "Merci pour votre saisie !";
             return RedirectToAction("Detail", "Especes", new { id = id_espece });
         }
 
