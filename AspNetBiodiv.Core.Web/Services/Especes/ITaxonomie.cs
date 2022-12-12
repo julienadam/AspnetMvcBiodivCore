@@ -1,4 +1,5 @@
 ﻿using AspNetBiodiv.Core.Web.Entities;
+using AspNetBiodiv.Core.Web.Plumbing.CacheMonitoring;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -19,11 +20,13 @@ public class DbTaxonomie : ITaxonomie
 {
     private readonly EspecesContext context;
     private readonly IDistributedCache cache;
+    private readonly ICacheMonitor monitor;
 
-    public DbTaxonomie(EspecesContext context, IDistributedCache cache)
+    public DbTaxonomie(EspecesContext context, IDistributedCache cache, ICacheMonitor monitor)
     {
         this.context = context ?? throw new ArgumentNullException(nameof(context));
         this.cache = cache;
+        this.monitor = monitor;
     }
 
     public Espece? RechercherParId(int id) => 
@@ -54,9 +57,11 @@ public class DbTaxonomie : ITaxonomie
         var cached = cache.GetString(cacheKey);
         if (cached != null)
         {
+            monitor.AddCacheHit();
             return JsonSerializer.Deserialize<List<string>>(cached);
         }
-
+        
+        monitor.AddCacheMiss();
         var result = context.Tags
             .Where(t => t.Nom.Contains(query.ToLower()))
             .Select(t => t.Nom)

@@ -1,4 +1,5 @@
 using AspNetBiodiv.Core.Web.Entities;
+using AspNetBiodiv.Core.Web.Plumbing.CacheMonitoring;
 using AspNetBiodiv.Core.Web.Plumbing.Middleware;
 using AspNetBiodiv.Core.Web.Services;
 using AspNetBiodiv.Core.Web.Services.Especes;
@@ -30,6 +31,7 @@ else
     builder.Services.AddScoped<IObservations, DbObservations>();
 }
 
+builder.Services.AddSingleton<ICacheMonitor, CacheMonitor>();
 builder.Services.AddSingleton<ICommunes, StaticCommunes>();
 builder.Services.AddSingleton<IStatisticsService, StatisticsService>();
 builder.Services.AddSingleton<AcmeVersionMiddleware>(); 
