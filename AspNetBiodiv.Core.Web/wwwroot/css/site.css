@@ -24,3 +24,7 @@ body {
 .banner {
     background-image: url("/img/banner.jpg");
 }
+
+.lang {
+    border: 1px solid yellow;
+}

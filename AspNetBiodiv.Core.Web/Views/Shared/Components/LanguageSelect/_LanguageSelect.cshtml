@@ -1,0 +1,14 @@
+﻿@model string
+
+@{
+    var frClass = (Model == "fr") ? "lang" : "";
+    var ukClass = (Model == "en") ? "lang" : "";
+}
+
+<a asp-action="SetLang" asp-controller="Language" asp-route-lang="fr">
+    <img src="img/fr.svg" width="30" height="20" class="@frClass" />
+</a>
+|
+<a asp-action="SetLang" asp-controller="Language" asp-route-lang="en" >
+    <img src="img/uk.svg" width="30" height="20" class="@ukClass"/>
+</a>

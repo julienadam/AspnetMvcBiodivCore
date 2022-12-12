@@ -72,6 +72,8 @@ public class DbObservations : IObservations
         }
 
         var rndId = random.Next(1, last);
-        return context.Observations.FirstOrDefault(o => o.ObservationId == rndId);
+        return context.Observations
+            .Include(o => o.EspeceObservee)
+            .FirstOrDefault(o => o.ObservationId == rndId);
     }
 }
