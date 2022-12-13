@@ -2,7 +2,9 @@
 using AspNetBiodiv.Core.Web.Models;
 using AspNetBiodiv.Core.Web.Services.Especes;
 using AspNetBiodiv.Core.Web.Services.Observations;
+using AspNetBiodiv.Core.Web.Services.UserData;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetBiodiv.Core.Web.Controllers
@@ -13,21 +15,23 @@ namespace AspNetBiodiv.Core.Web.Controllers
     {
         private readonly ITaxonomie taxonomie;
         private readonly IObservations observations;
+        private readonly IUserDataService userDataService;
 
-        public ObservationsController(ITaxonomie taxonomie, IObservations observations)
+        public ObservationsController(ITaxonomie taxonomie, IObservations observations, IUserDataService userDataService)
         {
             this.taxonomie = taxonomie;
             this.observations = observations;
+            this.userDataService = userDataService;
         }
 
         [Route("{id_espece:int}/saisie")]
-        public ActionResult Create(int id_espece)
+        public async Task<ActionResult> Create(int id_espece)
         {
             var espece = taxonomie.RechercherParId(id_espece);
             var viewModel = new ObservationViewModel(espece.EspeceId, espece.NomScientifique)
             {
                 DateCreation = DateTime.Now,
-                // NomCommune = User.Claims.FirstOrDefault(c => c.Type == "commune")?.Value ?? ""
+                NomCommune = await userDataService.GetCommuneForUserAsync(User?.Identity?.Name) ?? ""
             };
             return View(viewModel);
         }

@@ -5,6 +5,7 @@ using AspNetBiodiv.Core.Web.Services;
 using AspNetBiodiv.Core.Web.Services.Especes;
 using AspNetBiodiv.Core.Web.Services.Observations;
 using AspNetBiodiv.Core.Web.Services.Statistiques;
+using AspNetBiodiv.Core.Web.Services.UserData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
@@ -33,7 +34,7 @@ else
 }
 
 builder.Services.AddDefaultIdentity<BiodivUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<EspecesContext>();
-
+builder.Services.AddScoped<IUserDataService, IdentityUserDataService>();
 builder.Services.AddSingleton<ICacheMonitor, CacheMonitor>();
 builder.Services.AddSingleton<ICommunes, StaticCommunes>();
 builder.Services.AddSingleton<IStatisticsService, StatisticsService>();
