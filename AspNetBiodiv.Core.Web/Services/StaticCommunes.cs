@@ -6,7 +6,7 @@ public class StaticCommunes : ICommunes
 {
     public IEnumerable<SelectListItem> GetCommuneItems()
     {
-        return GetCommunes().Select(c => new SelectListItem { Text = c, Value = c });
+        return GetCommunes().Select(c => new SelectListItem { Text = c, Value = c }).ToList();
     }
 
     public IEnumerable<string> GetCommunes()

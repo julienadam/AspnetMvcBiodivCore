@@ -2,11 +2,13 @@
 using AspNetBiodiv.Core.Web.Models;
 using AspNetBiodiv.Core.Web.Services.Especes;
 using AspNetBiodiv.Core.Web.Services.Observations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetBiodiv.Core.Web.Controllers
 {
     [Route("observations")]
+    [Authorize]
     public class ObservationsController : Controller
     {
         private readonly ITaxonomie taxonomie;
