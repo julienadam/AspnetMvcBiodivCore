@@ -42,7 +42,8 @@ public class DbObservations : IObservations
 
     public void Update(Observation observation)
     {
-        context.Observations.Attach(observation);
+        context.Entry(observation).State = EntityState.Modified;
+        // context.Observations.Attach(observation);
         context.SaveChanges();
     }
 

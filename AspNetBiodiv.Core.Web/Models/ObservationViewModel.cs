@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using AspNetBiodiv.Core.Web.Entities;
-using AspNetBiodiv.Core.Web.Services.Observations;
 using AspNetBiodiv.Core.Web.Plumbing.Validation;
 using AspNetBiodiv.Core.Web.Services;
-using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetBiodiv.Core.Web.Models
 {
@@ -17,13 +15,7 @@ namespace AspNetBiodiv.Core.Web.Models
         [DataType(DataType.Date)]
         [LastYearDateRange(ErrorMessage = "Choisissez une date dans l'année passée")]
         public DateTime DateObservation { get; set; } = DateTime.Now;
-
-        [Required]
-        [DataType(DataType.EmailAddress, ErrorMessage = "Saisissez une adresse email valide")]
-        [DisplayName("Email de l'observateur")]
-        [Remote(action: "ValidateNumberOfPosts", controller: "Observations")]
-        public string EmailObservateur { get; set; } = string.Empty;
-
+        
         [DisplayName("Nombre d'individus observés")]
         [Range(1, 100, ErrorMessage = "Saisissez un nombre entre 1 et 100")]
         public int? Individus { get; set; }
@@ -59,7 +51,6 @@ namespace AspNetBiodiv.Core.Web.Models
                 NomEspeceObservee = observation.EspeceObservee.NomScientifique,
                 Commentaires = observation.Commentaires,
                 DateObservation = observation.ObservedAt,
-                EmailObservateur = observation.EmailObservateur,
                 Individus = observation.Individus,
                 NomCommune = observation.NomCommune,
                 IdEspeceObservee = observation.EspeceObserveeEspeceId
