@@ -10,11 +10,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using AspNetBiodiv.Core.Web.Services.Email;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.HttpLogging;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// Add request logging
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders;
+});
+builder.Services.AddW3CLogging(options =>
+{
+    options.LogDirectory = @"C:\temp\W3C_logs";
+});
 
 if (builder.Configuration["USE_FAKES"] == "1")
 {

@@ -1,19 +1,23 @@
 ﻿using AspNetBiodiv.Core.Web.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace AspNetBiodiv.Core.Web.Services.Observations;
 
 public class DbObservations : IObservations
 {
     private readonly EspecesContext context;
+    private readonly ILogger<DbObservations> logger;
 
-    public DbObservations(EspecesContext context)
+    public DbObservations(EspecesContext context, ILogger<DbObservations> logger)
     {
         this.context = context ?? throw new ArgumentNullException(nameof(context));
+        this.logger = logger;
     }
 
     public int Create(Observation observation)
     {
+        logger.LogInformation("New observation for {espece}", observation.EspeceObservee.NomScientifique);
         context.Add(observation);
         context.SaveChanges();
         return observation.ObservationId;
@@ -69,12 +73,20 @@ public class DbObservations : IObservations
 
         if (last == 0)
         {
+            logger.LogWarning("No random observations could be determined !");
             return null;
         }
 
         var rndId = random.Next(1, last);
-        return context.Observations
+        var result = context.Observations
             .Include(o => o.EspeceObservee)
             .FirstOrDefault(o => o.ObservationId == rndId);
+
+        if (result == null)
+        {
+            logger.LogError("No observation with id : {id}", rndId);
+        }
+
+        return result;
     }
 }
