@@ -1,6 +1,8 @@
 ﻿using AspNetBiodiv.Core.Web.Controllers;
+using AspNetBiodiv.Core.Web.Services.Email;
 using AspNetBiodiv.Core.Web.Services.Especes;
 using AspNetBiodiv.Core.Web.Services.Observations;
+using AspNetBiodiv.Core.Web.Services.UserData;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -15,7 +17,7 @@ namespace AspNetBiodiv.Core.Tests
         public ObservationsControllerTests()
         {
             observations = new Mock<IObservations>();
-            controller = new ObservationsController(new Mock<ITaxonomie>().Object, observations.Object);
+            controller = new ObservationsController(new Mock<ITaxonomie>().Object, observations.Object, new Mock<IUserDataService>().Object, new Mock<IEmailSender>().Object);
         }
 
         [Fact]
