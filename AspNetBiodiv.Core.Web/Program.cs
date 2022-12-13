@@ -33,7 +33,10 @@ else
     builder.Services.AddScoped<IObservations, DbObservations>();
 }
 
-builder.Services.AddDefaultIdentity<BiodivUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<EspecesContext>();
+builder.Services
+    .AddDefaultIdentity<BiodivUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<EspecesContext>();
 builder.Services.AddScoped<IUserDataService, IdentityUserDataService>();
 builder.Services.AddSingleton<ICacheMonitor, CacheMonitor>();
 builder.Services.AddSingleton<ICommunes, StaticCommunes>();
@@ -55,6 +58,23 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+else
+{
+    using var scope = app.Services.CreateScope();
+    var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetService<UserManager<BiodivUser>>();
+
+    if (!await roleManager.RoleExistsAsync(Roles.Administrator))
+    {
+        await roleManager.CreateAsync(new IdentityRole(Roles.Administrator));
+    }
+
+    if (await userManager.Users.CountAsync() == 1)
+    {
+        var user = userManager.Users.Single();
+        await userManager.AddToRoleAsync(user, Roles.Administrator);
+    }
 }
 
 app.UseHttpsRedirection();

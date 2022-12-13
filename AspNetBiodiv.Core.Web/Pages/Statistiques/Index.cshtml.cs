@@ -1,11 +1,14 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using AspNetBiodiv.Core.Web.Services;
 using AspNetBiodiv.Core.Web.Services.Statistiques;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AspNetBiodiv.Core.Web.Pages.Statistiques
 {
+    [Authorize(Roles = Roles.Administrator)]
     public class IndexModel : PageModel
     {
         private readonly IStatisticsService statisticsService;
