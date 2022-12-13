@@ -1,5 +1,6 @@
 ﻿using AspNetBiodiv.Core.Web.Entities;
 using AspNetBiodiv.Core.Web.Models;
+using AspNetBiodiv.Core.Web.Services.Email;
 using AspNetBiodiv.Core.Web.Services.Especes;
 using AspNetBiodiv.Core.Web.Services.Observations;
 using AspNetBiodiv.Core.Web.Services.UserData;
@@ -16,12 +17,14 @@ namespace AspNetBiodiv.Core.Web.Controllers
         private readonly ITaxonomie taxonomie;
         private readonly IObservations observations;
         private readonly IUserDataService userDataService;
+        private readonly IEmailSender sender;
 
-        public ObservationsController(ITaxonomie taxonomie, IObservations observations, IUserDataService userDataService)
+        public ObservationsController(ITaxonomie taxonomie, IObservations observations, IUserDataService userDataService, IEmailSender sender)
         {
             this.taxonomie = taxonomie;
             this.observations = observations;
             this.userDataService = userDataService;
+            this.sender = sender;
         }
 
         [Route("{id_espece:int}/saisie")]
@@ -40,7 +43,8 @@ namespace AspNetBiodiv.Core.Web.Controllers
         [HttpPost]
         public ActionResult Create(int id_espece, ObservationViewModel viewModel)
         {
-            if (HasTooManyToday(GetEmailFromUser()))
+            var email = GetEmailFromUser();
+            if (HasTooManyToday(email))
             {
                 ModelState.AddModelError("Email", "Too many posts today");
             }
@@ -51,8 +55,10 @@ namespace AspNetBiodiv.Core.Web.Controllers
             }
             
             var espece = taxonomie.RechercherParId(id_espece);
-            observations.Create(CreateObservationFromViewModel(id_espece, viewModel, espece));
+            var id = observations.Create(CreateObservationFromViewModel(id_espece, viewModel, espece));
             TempData["ThankYou"] = "Merci pour votre saisie !";
+            sender.SendThankYouEmail(email, 
+                Url.Action("Details", "Observations", new { id }, protocol: "https") ?? "Could not find valid link");
             return RedirectToAction("Detail", "Especes", new { id = id_espece });
         }
 

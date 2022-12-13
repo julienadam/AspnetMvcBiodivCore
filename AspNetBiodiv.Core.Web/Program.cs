@@ -8,6 +8,8 @@ using AspNetBiodiv.Core.Web.Services.Statistiques;
 using AspNetBiodiv.Core.Web.Services.UserData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using AspNetBiodiv.Core.Web.Services.Email;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,11 @@ else
     builder.Services.AddScoped<ITaxonomie, DbTaxonomie>();
     builder.Services.AddScoped<IObservations, DbObservations>();
 }
+
+builder.Services.Configure<ConfirmationEmailOptions>(
+    builder.Configuration.GetSection(nameof(ConfirmationEmailOptions)));
+
+builder.Services.AddScoped<IEmailSender, FakeEmailSender>();
 
 builder.Services
     .AddDefaultIdentity<BiodivUser>(options => options.SignIn.RequireConfirmedAccount = true)
