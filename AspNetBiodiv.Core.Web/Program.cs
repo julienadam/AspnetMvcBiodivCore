@@ -26,6 +26,13 @@ builder.Services.AddW3CLogging(options =>
     options.LogDirectory = @"C:\temp\W3C_logs";
 });
 
+builder.Services.AddDbContext<EspecesContext>(options =>
+{
+    options
+        .UseSqlServer(builder.Configuration.GetConnectionString("Especes"));
+    //.EnableDetailedErrors();
+});
+
 if (builder.Configuration["USE_FAKES"] == "1")
 {
     builder.Services.AddSingleton<ITaxonomie, BogusTaxonomie>();
@@ -33,14 +40,7 @@ if (builder.Configuration["USE_FAKES"] == "1")
 }
 else
 {
-    builder.Services.AddDbContext<EspecesContext>(options =>
-    {
-        options
-            .UseSqlServer(builder.Configuration.GetConnectionString("Especes"))
-            .EnableDetailedErrors();
-    });
-
-
+    builder.Services.AddScoped<IImportService, ImportService>();
     builder.Services.AddScoped<ITaxonomie, DbTaxonomie>();
     builder.Services.AddScoped<IObservations, DbObservations>();
 }

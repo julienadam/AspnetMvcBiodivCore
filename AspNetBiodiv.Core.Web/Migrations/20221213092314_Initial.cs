@@ -90,13 +90,6 @@ namespace AspNetBiodiv.Core.Web.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-           migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                table: "AspNetRoles",
-                column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
-            
             migrationBuilder.CreateIndex(
                 name: "IX_Especes_NomScientifique",
                 table: "Especes",
@@ -129,9 +122,6 @@ namespace AspNetBiodiv.Core.Web.Migrations
             migrationBuilder.DropTable(
                 name: "Observations");
 
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
-            
             migrationBuilder.DropTable(
                 name: "Tags");
 
