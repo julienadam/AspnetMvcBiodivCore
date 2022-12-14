@@ -21,11 +21,11 @@ else
     builder.Services.AddDbContext<EspecesContext>(options =>
     {
         options
-            .UseSqlServer(builder.Configuration.GetConnectionString("Especes"))
-            .EnableDetailedErrors();
+            .UseSqlServer(builder.Configuration.GetConnectionString("Especes"));
+        //.EnableDetailedErrors();
     });
 
-
+    builder.Services.AddScoped<IImportService, ImportService>();
     builder.Services.AddScoped<ITaxonomie, DbTaxonomie>();
     builder.Services.AddScoped<IObservations, DbObservations>();
 }

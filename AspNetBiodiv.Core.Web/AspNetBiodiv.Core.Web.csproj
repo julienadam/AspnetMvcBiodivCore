@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Bogus" Version="34.0.2" />
+    <PackageReference Include="csvHelper" Version="30.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
